@@ -1,101 +1,146 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import '@/i18n';
+import { useTranslation } from 'react-i18next';
+import { useMnemonic } from '@/hooks/useMnemonic';
+import MnemonicSection from '@/components/MnemonicSection';
+import EntropySection from '@/components/EntropySection';
+import SeedDisplay from '@/components/SeedDisplay';
+import DerivationTabs from '@/components/DerivationTabs';
+import AddressTable from '@/components/AddressTable';
+import Bip85Section from '@/components/Bip85Section';
+import SplitMnemonicCards from '@/components/SplitMnemonicCards';
+import AiSecurityPanel from '@/components/AiSecurityPanel';
+import LanguageToggle from '@/components/LanguageToggle';
+import QRModal from '@/components/QRModal';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const { i18n } = useTranslation();
+  const isZh = i18n.language === 'zh';
+  const m = useMnemonic();
+  const [privacyMode, setPrivacyMode] = useState(false);
+  const [qrData, setQrData] = useState<{ text: string; label: string } | null>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <div className="min-h-screen">
+      {/* Header - compact */}
+      <header className="border-b border-[--border] bg-[--bg-secondary] sticky top-0 z-50">
+        <div className="max-w-[1200px] mx-auto px-3 h-10 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-bold text-[--accent]">BIP39</span>
+            <span className="text-[11px] text-[--text-muted]">Mnemonic Code Converter</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => setPrivacyMode(!privacyMode)}
+              className={`toggle-pill ${privacyMode ? 'active' : ''}`}
+            >
+              {privacyMode ? '🔒' : '👁'} {privacyMode ? (isZh ? '已隐藏' : 'Hidden') : (isZh ? '隐私' : 'Privacy')}
+            </button>
+            <LanguageToggle />
+          </div>
         </div>
+      </header>
+
+      {/* Main content - tighter spacing */}
+      <main className="max-w-[1200px] mx-auto px-3 py-3 space-y-3">
+        {/* Security notice */}
+        <div className="text-[11px] text-[--text-muted] bg-[--bg-secondary] border border-[--border] rounded px-3 py-1.5">
+          ⚠ {isZh
+            ? '所有密钥操作在浏览器本地完成，不发送任何数据到服务器。建议断网使用。'
+            : 'All key operations run locally in your browser. No data is sent to any server. Offline usage recommended.'}
+        </div>
+
+        <MnemonicSection
+          mnemonic={m.mnemonic}
+          setMnemonic={m.setMnemonic}
+          wordCount={m.wordCount}
+          setWordCount={m.setWordCount}
+          wordlistLang={m.wordlistLang}
+          setWordlistLang={m.setWordlistLang}
+          passphrase={m.passphrase}
+          setPassphrase={m.setPassphrase}
+          isValid={m.isValid}
+          generate={m.generate}
+          privacyMode={privacyMode}
+          pbkdf2Rounds={m.pbkdf2Rounds}
+          setPbkdf2Rounds={m.setPbkdf2Rounds}
+        />
+
+        <EntropySection
+          entropy={m.entropy}
+          entropyBinary={m.entropyBinary}
+          setEntropyHex={m.setEntropyHex}
+          isValid={m.isValid}
+          wordCount={m.wordCount}
+        />
+
+        <SeedDisplay
+          seed={m.seed} rootKey={m.rootKey} privacyMode={privacyMode} onQR={setQrData}
+          inputMode={m.inputMode} setInputMode={m.setInputMode}
+          manualSeed={m.manualSeed} setManualSeed={m.setManualSeed}
+          manualRootKey={m.manualRootKey} setManualRootKey={m.setManualRootKey}
+        />
+
+        <DerivationTabs
+          bipType={m.bipType}
+          setBipType={m.setBipType}
+          coinId={m.coinId}
+          setCoinId={m.setCoinId}
+          coinType={m.coinType}
+          account={m.account}
+          setAccount={m.setAccount}
+          change={m.change}
+          setChange={m.setChange}
+          xpub={m.xpub}
+          xprv={m.xprv}
+          customPath={m.customPath}
+          setCustomPath={m.setCustomPath}
+          bip141Script={m.bip141Script}
+          setBip141Script={m.setBip141Script}
+          isValid={m.isValid}
+          privacyMode={privacyMode}
+          onQR={setQrData}
+        />
+
+        <AddressTable
+          addresses={m.addresses}
+          loadMore={m.loadMore}
+          startIndex={m.startIndex}
+          setStartIndex={m.setStartIndex}
+          addressCount={m.addressCount}
+          setAddressCount={m.setAddressCount}
+          hardened={m.hardened}
+          setHardened={m.setHardened}
+          privacyMode={privacyMode}
+          onQR={setQrData}
+        />
+
+        <AiSecurityPanel
+          mnemonic={m.mnemonic}
+          isValid={m.isValid}
+          wordCount={m.wordCount}
+          passphrase={m.passphrase}
+          bipType={m.bipType}
+          coinId={m.coinId}
+          pbkdf2Rounds={m.pbkdf2Rounds}
+        />
+
+        <SplitMnemonicCards mnemonic={m.mnemonic} isValid={m.isValid} />
+
+        <Bip85Section seed={m.seed} isValid={m.isValid} privacyMode={privacyMode} />
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+      {/* Footer */}
+      <footer className="border-t border-[--border] mt-4 py-3">
+        <div className="max-w-[1200px] mx-auto px-3 text-center text-[11px] text-[--text-muted]">
+          BIP39.ai &middot; {isZh ? '开源助记词工具' : 'Open Source Mnemonic Tool'} &middot; {isZh ? '客户端加密' : 'Client-side Cryptography'}
+        </div>
       </footer>
+
+      {/* QR Modal */}
+      {qrData && <QRModal text={qrData.text} label={qrData.label} onClose={() => setQrData(null)} />}
     </div>
   );
 }

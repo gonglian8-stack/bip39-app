@@ -1,0 +1,71 @@
+{
+  "site": {
+    "title": "BIP39.ai - Mnemonic Code Converter",
+    "subtitle": "AI-Powered BIP39 Mnemonic Tool",
+    "description": "Generate, validate, and analyze BIP39 mnemonic phrases with AI-powered security analysis"
+  },
+  "mnemonic": {
+    "title": "Mnemonic",
+    "generate": "Generate",
+    "words": "words",
+    "placeholder": "Enter your mnemonic phrase here or generate a new one...",
+    "valid": "Valid Mnemonic",
+    "invalid": "Invalid Mnemonic",
+    "passphrase": "BIP39 Passphrase (optional)",
+    "passphrasePlaceholder": "Enter passphrase...",
+    "wordlist": "Wordlist Language",
+    "wordCount": "Word Count",
+    "warning": "WARNING: Do not use a mnemonic generated online for real funds. Generate offline for maximum security."
+  },
+  "entropy": {
+    "title": "Entropy",
+    "hex": "Hex",
+    "binary": "Binary",
+    "dice": "Dice (1-6)",
+    "bits": "bits"
+  },
+  "seed": {
+    "title": "BIP39 Seed",
+    "rootKey": "BIP32 Root Key"
+  },
+  "derivation": {
+    "title": "Derivation Path",
+    "purpose": "Purpose",
+    "coin": "Coin",
+    "account": "Account",
+    "change": "External / Internal",
+    "external": "External",
+    "internal": "Internal (Change)",
+    "customPath": "Custom Path",
+    "xpub": "Account Extended Public Key",
+    "xprv": "Account Extended Private Key"
+  },
+  "addresses": {
+    "title": "Derived Addresses",
+    "path": "Path",
+    "address": "Address",
+    "publicKey": "Public Key",
+    "privateKey": "Private Key",
+    "wif": "WIF",
+    "showMore": "Show 20 More",
+    "export": "Export CSV",
+    "copied": "Copied!"
+  },
+  "ai": {
+    "scanAddress": "AI Scan",
+    "scanning": "Scanning...",
+    "securityScore": "Security Score",
+    "safe": "Safe",
+    "warning": "Warning",
+    "danger": "Danger",
+    "assistant": "AI Security Assistant",
+    "askPlaceholder": "Ask about BIP39, wallet security..."
+  },
+  "common": {
+    "copy": "Copy",
+    "copied": "Copied!",
+    "show": "Show",
+    "hide": "Hide",
+    "loading": "Loading..."
+  }
+}

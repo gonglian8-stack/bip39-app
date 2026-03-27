@@ -1,0 +1,71 @@
+{
+  "site": {
+    "title": "BIP39.ai - 助记词转换器",
+    "subtitle": "AI 驱动的 BIP39 助记词工具",
+    "description": "生成、验证和分析 BIP39 助记词，配备 AI 安全分析"
+  },
+  "mnemonic": {
+    "title": "助记词",
+    "generate": "生成",
+    "words": "个词",
+    "placeholder": "在此输入您的助记词或生成新的...",
+    "valid": "助记词有效",
+    "invalid": "助记词无效",
+    "passphrase": "BIP39 密码短语（可选）",
+    "passphrasePlaceholder": "输入密码短语...",
+    "wordlist": "词表语言",
+    "wordCount": "词数",
+    "warning": "警告：请勿将在线生成的助记词用于实际资金。请离线生成以确保最大安全性。"
+  },
+  "entropy": {
+    "title": "熵",
+    "hex": "十六进制",
+    "binary": "二进制",
+    "dice": "骰子 (1-6)",
+    "bits": "位"
+  },
+  "seed": {
+    "title": "BIP39 种子",
+    "rootKey": "BIP32 根密钥"
+  },
+  "derivation": {
+    "title": "派生路径",
+    "purpose": "用途",
+    "coin": "币种",
+    "account": "账户",
+    "change": "外部 / 内部",
+    "external": "外部",
+    "internal": "内部（找零）",
+    "customPath": "自定义路径",
+    "xpub": "账户扩展公钥",
+    "xprv": "账户扩展私钥"
+  },
+  "addresses": {
+    "title": "派生地址",
+    "path": "路径",
+    "address": "地址",
+    "publicKey": "公钥",
+    "privateKey": "私钥",
+    "wif": "WIF",
+    "showMore": "显示更多 20 个",
+    "export": "导出 CSV",
+    "copied": "已复制！"
+  },
+  "ai": {
+    "scanAddress": "AI 扫描",
+    "scanning": "扫描中...",
+    "securityScore": "安全评分",
+    "safe": "安全",
+    "warning": "警告",
+    "danger": "危险",
+    "assistant": "AI 安全助手",
+    "askPlaceholder": "询问 BIP39、钱包安全相关问题..."
+  },
+  "common": {
+    "copy": "复制",
+    "copied": "已复制！",
+    "show": "显示",
+    "hide": "隐藏",
+    "loading": "加载中..."
+  }
+}
