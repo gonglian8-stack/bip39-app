@@ -26,10 +26,28 @@ export default function Home() {
     <div className="min-h-screen">
       {/* Header - compact */}
       <header className="border-b border-[--border] bg-[--bg-secondary] sticky top-0 z-50">
-        <div className="max-w-[1200px] mx-auto px-3 h-10 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-bold text-[--accent]">BIP39</span>
-            <span className="text-[11px] text-[--text-muted]">Mnemonic Code Converter</span>
+        <div className="max-w-[1200px] mx-auto px-4 h-12 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {/* Logo */}
+            <div className="flex items-center gap-2">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="32" height="32" rx="8" fill="url(#logo-grad)" />
+                <path d="M7 9h5v5H7zM13.5 9h5v5h-5zM20 9h5v5h-5zM7 18h5v5H7zM13.5 18h5v5h-5zM20 18h5v5h-5z" fill="rgba(255,255,255,0.92)" rx="1.5" />
+                <defs>
+                  <linearGradient id="logo-grad" x1="0" y1="0" x2="32" y2="32">
+                    <stop stopColor="#6366f1" />
+                    <stop offset="1" stopColor="#8b5cf6" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div className="flex flex-col leading-none">
+                <span className="text-lg font-extrabold tracking-tight">
+                  <span className="text-[--accent]">BIP39</span>
+                  <span className="text-purple-400">.ai</span>
+                </span>
+              </div>
+            </div>
+            <span className="text-xs text-[--text-muted] hidden sm:inline border-l border-[--border] pl-3 ml-0.5">Mnemonic Code Converter</span>
           </div>
           <div className="flex items-center gap-1.5">
             <button
@@ -135,7 +153,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-[--border] mt-4 py-3">
         <div className="max-w-[1200px] mx-auto px-3 text-center text-[11px] text-[--text-muted]">
-          BIP39.ai &middot; {isZh ? '开源助记词工具' : 'Open Source Mnemonic Tool'} &middot; {isZh ? '客户端加密' : 'Client-side Cryptography'}
+          <span className="font-semibold text-[--accent]">BIP39</span><span className="font-semibold text-purple-400">.ai</span> &middot; {isZh ? '开源助记词工具' : 'Open Source Mnemonic Tool'} &middot; {isZh ? '客户端加密' : 'Client-side Cryptography'}
         </div>
       </footer>
 

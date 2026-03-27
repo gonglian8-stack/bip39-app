@@ -103,8 +103,9 @@ export function useMnemonic() {
     setMnemonicRaw(m);
   }, [wordCount, wordlistLang]);
 
+  // Don't auto-generate on first load - let user click Generate
   useEffect(() => {
-    if (!mnemonic) {
+    if (false && !mnemonic) {
       const m = bip39.generate(wordCount, wordlistLang);
       setMnemonicRaw(m);
     }
