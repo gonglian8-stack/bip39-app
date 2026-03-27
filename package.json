@@ -14,6 +14,7 @@
     "@noble/secp256k1": "^3.0.0",
     "@scure/bip32": "^2.0.1",
     "@scure/bip39": "^2.0.1",
+    "@supabase/supabase-js": "^2.100.1",
     "bs58": "^6.0.0",
     "bs58check": "^4.0.0",
     "buffer": "^6.0.3",
