@@ -7,8 +7,12 @@ interface DailyRow { date: string; views: number; uniqueIPs: number }
 interface CountryRow { country: string; views: number }
 interface VisitorRow { time: string; ip: string; country: string; city: string; path: string; referer: string; ua: string }
 
+const ADMIN_PASS = 'bip39admin';
+const SB_URL = 'https://hevhrjnmymtgqdcbkhif.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhldmhyam5teW10Z3FkY2JraGlmIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDU4NTg1NiwiZXhwIjoyMDkwMTYxODU2fQ.pv8adSuYcUyhBCfl-y-HgJDvKrYPDbeKQNEJyB0jP0I';
+
 export default function AdminPage() {
-  const [key, setKey] = useState('');
+  const [password, setPassword] = useState('');
   const [days, setDays] = useState(7);
   const [authed, setAuthed] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -19,14 +23,11 @@ export default function AdminPage() {
   const [topCountries, setTopCountries] = useState<CountryRow[]>([]);
   const [recent, setRecent] = useState<VisitorRow[]>([]);
 
-  const fetchStats = useCallback(async (serviceKey: string, numDays: number) => {
+  const fetchStats = useCallback(async (numDays: number) => {
     setLoading(true);
     setError('');
     try {
-      const sb = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-        serviceKey
-      );
+      const sb = createClient(SB_URL, SB_KEY);
       const since = new Date(Date.now() - numDays * 86400000).toISOString();
 
       const { count } = await sb.from('page_views').select('*', { count: 'exact', head: true }).gte('created_at', since);
@@ -69,10 +70,14 @@ export default function AdminPage() {
     setLoading(false);
   }, []);
 
-  const login = () => fetchStats(key, days);
+  const login = () => {
+    if (password !== ADMIN_PASS) { setError('密码错误'); return; }
+    setAuthed(true);
+    fetchStats(days);
+  };
 
   useEffect(() => {
-    if (authed && key) fetchStats(key, days);
+    if (authed) fetchStats(days);
   }, [days]); // eslint-disable-line
 
   return (
@@ -84,14 +89,14 @@ export default function AdminPage() {
 
         {!authed && (
           <div className="bg-[#111827] rounded-lg p-6 max-w-md">
-            <label className="block text-sm text-gray-400 mb-2">Service Role Key</label>
+            <label className="block text-sm text-gray-400 mb-2">Admin Password</label>
             <input
               type="password"
-              value={key}
-              onChange={e => setKey(e.target.value)}
+              value={password}
+              onChange={e => setPassword(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && login()}
               className="w-full bg-[#1e293b] border border-gray-700 rounded px-3 py-2 text-sm mb-3"
-              placeholder="eyJhbGci..."
+              placeholder="Enter password..."
             />
             <button onClick={login} disabled={loading} className="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded text-sm font-medium">
               {loading ? 'Loading...' : 'Login'}
@@ -108,7 +113,7 @@ export default function AdminPage() {
                   className={`px-3 py-1.5 rounded text-sm ${days === d ? 'bg-indigo-600' : 'bg-[#1e293b] hover:bg-[#334155]'}`}
                 >{d === 1 ? 'Today' : `${d} Days`}</button>
               ))}
-              <button onClick={() => fetchStats(key, days)} className="px-3 py-1.5 rounded text-sm bg-[#1e293b] hover:bg-[#334155] ml-auto">Refresh</button>
+              <button onClick={() => fetchStats(days)} className="px-3 py-1.5 rounded text-sm bg-[#1e293b] hover:bg-[#334155] ml-auto">Refresh</button>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
