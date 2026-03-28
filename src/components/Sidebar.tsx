@@ -21,17 +21,11 @@ export default function Sidebar({ activeSection, onNavigate }: Props) {
 
   const handleClick = (item: typeof NAV_ITEMS[0]) => {
     onNavigate(item.id);
-    const container = document.getElementById('main-scroll');
-    if (!container) return;
     if (item.scrollTo === 'top') {
-      container.scrollTo({ top: 0, behavior: 'smooth' });
+      document.getElementById('main-scroll')?.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
-    const el = document.getElementById(item.scrollTo);
-    if (el) {
-      const top = el.offsetTop - container.offsetTop;
-      container.scrollTo({ top, behavior: 'smooth' });
-    }
+    document.getElementById(item.scrollTo)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (

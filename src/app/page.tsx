@@ -54,14 +54,7 @@ export default function Home() {
               {['Mnemonic', 'Entropy', 'Keys', 'Addresses'].map(tab => (
                 <button
                   key={tab}
-                  onClick={() => {
-                    const el = document.getElementById(tab.toLowerCase());
-                    const container = document.getElementById('main-scroll');
-                    if (el && container) {
-                      const top = el.offsetTop - container.offsetTop;
-                      container.scrollTo({ top, behavior: 'smooth' });
-                    }
-                  }}
+                  onClick={() => document.getElementById(tab.toLowerCase())?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
                   className="px-3 py-1.5 text-sm text-gray-400 hover:text-emerald-400 hover:bg-emerald-500/5 rounded-lg transition-colors"
                 >
                   {tab}
