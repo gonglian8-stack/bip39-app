@@ -88,12 +88,12 @@ export default function Home() {
       </header>
 
       {/* Body: Sidebar + Main + Right Panel */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden max-w-[1400px] mx-auto w-full">
         {/* Left Sidebar */}
         <Sidebar activeSection={activeSection} onNavigate={setActiveSection} />
 
         {/* Main Content */}
-        <main id="main-scroll" className="flex-1 overflow-y-auto px-4 lg:px-8 py-5 space-y-5 max-w-[960px]">
+        <main id="main-scroll" className="flex-1 overflow-y-auto px-4 lg:px-8 py-5 space-y-5">
           {/* Hero title */}
           <div className="mb-2">
             <h1 className="text-2xl lg:text-3xl font-bold text-white leading-tight">
@@ -188,6 +188,7 @@ export default function Home() {
             />
           </div>
 
+          <div id="ai-security">
           <AiSecurityPanel
             mnemonic={m.mnemonic}
             isValid={m.isValid}
@@ -197,6 +198,7 @@ export default function Home() {
             coinId={m.coinId}
             pbkdf2Rounds={m.pbkdf2Rounds}
           />
+          </div>
 
           <SplitMnemonicCards mnemonic={m.mnemonic} isValid={m.isValid} />
 
