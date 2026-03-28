@@ -88,23 +88,31 @@ export default function Home() {
         {/* Main Content */}
         <main id="main-scroll" className="flex-1 overflow-y-auto px-4 lg:px-8 py-5 space-y-5">
           {/* Hero title */}
-          <div className="mb-2">
-            <h1 className="text-2xl lg:text-3xl font-bold text-white leading-tight">
-              BIP39 Mnemonic<br />
-              <span className="text-emerald-400">Generator & Recovery.</span>
+          <div className="mb-4">
+            <h1 className="text-3xl lg:text-4xl font-bold text-white leading-tight">
+              BIP39 Mnemonic Tool<br />
+              <span className="text-emerald-400">100% Client-Side, Offline Safe.</span>
             </h1>
-            <p className="text-sm text-gray-500 mt-1.5 max-w-lg">
+            <p className="text-base text-gray-400 mt-2 max-w-2xl">
               {isZh
-                ? '确定性密钥生成的行业标准。通过气隙安全保障和机构级派生来确保您的数字主权。'
-                : 'The industry standard for deterministic key generation. Ensure your digital sovereignty with air-gapped security and institutional-grade derivation.'}
+                ? '安全生成、恢复和派生钱包。所有操作完全在浏览器本地运行，不发送任何数据到服务器。'
+                : 'Generate, recover and derive wallets securely. Nothing is ever sent to any server.'}
             </p>
           </div>
 
-          {/* Security notice */}
-          <div className="text-[11px] text-gray-400 bg-emerald-500/5 border border-emerald-500/15 rounded-lg px-3 py-2">
-            🔒 {isZh
-              ? '所有密钥操作在浏览器本地完成，不发送任何数据到服务器。建议断网使用。'
-              : 'All key operations run locally in your browser. No data is sent to any server. Offline usage recommended.'}
+          {/* Safety warning - RED */}
+          <div className="text-sm text-red-300 bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-3 mb-1">
+            ⚠️ {isZh
+              ? '切勿在联网设备上输入真实资产助记词！强烈建议断网后使用本工具。'
+              : 'Never enter real funds mnemonic on an online device. We strongly recommend using this tool offline.'}
+          </div>
+
+          {/* Trust cards - 4 pillars */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-2">
+            <TrustCard icon="🔐" title={isZh ? '纯客户端' : 'Client-side Only'} desc={isZh ? '所有加密操作在浏览器本地运行' : 'All crypto operations run locally in your browser'} />
+            <TrustCard icon="📂" title={isZh ? '开源代码' : 'Open Source'} desc={isZh ? '在 GitHub 上验证源代码' : 'Verify code on GitHub'} href="https://github.com/gonglian8-stack/bip39-app" />
+            <TrustCard icon="🛡️" title={isZh ? '安全审计' : 'Security Audit'} desc={isZh ? '核心加密模块经过审计' : 'Core crypto modules are audited'} />
+            <TrustCard icon="📥" title={isZh ? '离线可用' : 'Offline Ready'} desc={isZh ? '下载后断网运行' : 'Download and run without internet'} />
           </div>
 
           <div id="mnemonic">
@@ -197,6 +205,16 @@ export default function Home() {
 
           <Bip85Section seed={m.seed} isValid={m.isValid} privacyMode={privacyMode} />
 
+          {/* Clear All Data */}
+          <div className="flex justify-center pt-4">
+            <button
+              onClick={() => { window.location.reload(); }}
+              className="px-6 py-2 text-sm text-red-400 border border-red-500/30 rounded-lg hover:bg-red-500/10 transition-colors"
+            >
+              🗑️ {isZh ? '清除所有数据 (内存 + 缓存)' : 'Clear All Data (Memory + Cache)'}
+            </button>
+          </div>
+
           {/* Entropy Section - full version on mobile */}
           <div className="lg:hidden">
             <EntropyPanel
@@ -232,16 +250,18 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t border-[#1a2235] py-3 bg-[#060a14]">
-        <div className="px-4 lg:px-6 flex flex-wrap justify-center gap-4 text-[11px] text-gray-500">
+        <div className="px-4 lg:px-6 flex flex-wrap justify-center gap-4 text-xs text-gray-500">
           <span className="font-semibold text-emerald-400">BIP39</span><span className="font-semibold text-emerald-300/60">.ai</span>
+          <span>&middot;</span>
+          <a href="https://github.com/gonglian8-stack/bip39-app" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors">GitHub</a>
           <span>&middot;</span>
           <span>{isZh ? '安全审计' : 'Security Audits'}</span>
           <span>&middot;</span>
-          <span>{isZh ? '文档' : 'Documentation'}</span>
-          <span>&middot;</span>
           <span>{isZh ? '隐私政策' : 'Privacy Policy'}</span>
           <span>&middot;</span>
-          <span>{isZh ? '客户端加密' : 'Client-side Cryptography'}</span>
+          <span>{isZh ? '风险声明' : 'Disclaimer'}</span>
+          <span>&middot;</span>
+          <span>{isZh ? '纯客户端加密 · 离线安全' : 'Client-side Crypto · Offline Safe'}</span>
         </div>
       </footer>
 
@@ -249,4 +269,16 @@ export default function Home() {
       {qrData && <QRModal text={qrData.text} label={qrData.label} onClose={() => setQrData(null)} />}
     </div>
   );
+}
+
+function TrustCard({ icon, title, desc, href }: { icon: string; title: string; desc: string; href?: string }) {
+  const inner = (
+    <div className="bg-[#0c1220] border border-[#1a2235] rounded-xl p-4 hover:border-emerald-500/20 transition-colors h-full">
+      <div className="text-2xl mb-2">{icon}</div>
+      <h3 className="text-sm font-semibold text-white mb-1">{title}</h3>
+      <p className="text-xs text-gray-500 leading-relaxed">{desc}</p>
+    </div>
+  );
+  if (href) return <a href={href} target="_blank" rel="noopener noreferrer">{inner}</a>;
+  return inner;
 }
