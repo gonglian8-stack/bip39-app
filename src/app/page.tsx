@@ -54,8 +54,15 @@ export default function Home() {
               {['Mnemonic', 'Entropy', 'Keys', 'Addresses'].map(tab => (
                 <button
                   key={tab}
-                  onClick={() => document.getElementById(tab.toLowerCase())?.scrollIntoView({ behavior: 'smooth' })}
-                  className="px-3 py-1.5 text-xs text-gray-400 hover:text-emerald-400 hover:bg-emerald-500/5 rounded-lg transition-colors"
+                  onClick={() => {
+                    const el = document.getElementById(tab.toLowerCase());
+                    const container = document.getElementById('main-scroll');
+                    if (el && container) {
+                      const top = el.offsetTop - container.offsetTop;
+                      container.scrollTo({ top, behavior: 'smooth' });
+                    }
+                  }}
+                  className="px-3 py-1.5 text-sm text-gray-400 hover:text-emerald-400 hover:bg-emerald-500/5 rounded-lg transition-colors"
                 >
                   {tab}
                 </button>
@@ -86,7 +93,7 @@ export default function Home() {
         <Sidebar activeSection={activeSection} onNavigate={setActiveSection} />
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto px-4 lg:px-6 py-4 space-y-4">
+        <main id="main-scroll" className="flex-1 overflow-y-auto px-4 lg:px-8 py-5 space-y-5 max-w-[960px]">
           {/* Hero title */}
           <div className="mb-2">
             <h1 className="text-2xl lg:text-3xl font-bold text-white leading-tight">
