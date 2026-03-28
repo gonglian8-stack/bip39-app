@@ -34,52 +34,57 @@ export default function MnemonicSection({
 
   return (
     <div className="section-card">
-      {/* Header row */}
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-2">
-          <span className="section-header mb-0">{isZh ? '助记词' : 'Mnemonic'}</span>
-          {mnemonic && (
-            <span className={`text-[10px] px-1.5 py-0.5 rounded ${
-              isValid ? 'bg-green-900/40 text-green-400' : 'bg-red-900/40 text-red-400'
-            }`}>
-              {isValid ? '✓' : '✗'}
-            </span>
-          )}
-        </div>
-        <button onClick={generate} className="btn btn-primary">
-          ↻ {isZh ? '生成' : 'Generate'}
-        </button>
-      </div>
-
-      {/* Controls */}
-      <div className="flex flex-wrap items-center gap-2 mb-2">
+      {/* Sentence-style header with inline controls */}
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-2 mb-3 text-sm text-gray-400 leading-relaxed">
+        <span>{isZh ? '生成' : 'Generate a'}</span>
         <select
           value={wordCount}
           onChange={(e) => setWordCount(Number(e.target.value) as WordCount)}
-          className="select-field"
+          className="inline-flex items-center px-2.5 py-1.5 text-lg font-extrabold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 rounded-lg cursor-pointer hover:bg-emerald-500/20 transition-colors appearance-none text-center"
+          style={{ minWidth: '3.5rem' }}
         >
           {WORD_COUNTS.map(wc => (
-            <option key={wc} value={wc}>{wc} {isZh ? '词' : 'words'}</option>
+            <option key={wc} value={wc}>{wc}</option>
           ))}
         </select>
-        <select
-          value={wordlistLang}
-          onChange={(e) => setWordlistLang(e.target.value)}
-          className="select-field"
-        >
-          {WORDLIST_LANGS.map(wl => (
-            <option key={wl.id} value={wl.id}>{isZh ? wl.labelZh : wl.label}</option>
-          ))}
-        </select>
+        <span>{isZh ? '位助记词' : 'word mnemonic'}</span>
+        <button onClick={generate} className="px-4 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm rounded-lg transition-colors tracking-wide uppercase shadow-lg shadow-emerald-500/20">
+          {isZh ? '生成' : 'GENERATE'}
+        </button>
+        <span>{isZh ? '或在下方输入' : 'or enter your own below.'}</span>
+        {mnemonic && (
+          <span className={`text-[10px] px-1.5 py-0.5 rounded ${
+            isValid ? 'bg-green-900/40 text-green-400' : 'bg-red-900/40 text-red-400'
+          }`}>
+            {isValid ? '✓ Valid' : '✗ Invalid'}
+          </span>
+        )}
         <select
           value={pbkdf2Rounds}
           onChange={(e) => setPbkdf2Rounds(Number(e.target.value))}
-          className="select-field"
+          className="select-field text-[10px] ml-auto"
         >
           <option value={2048}>PBKDF2: 2048</option>
           <option value={4096}>PBKDF2: 4096</option>
           <option value={8192}>PBKDF2: 8192</option>
         </select>
+      </div>
+
+      {/* Wordlist language pills */}
+      <div className="flex flex-wrap gap-1.5 mb-2">
+        {WORDLIST_LANGS.map(wl => (
+          <button
+            key={wl.id}
+            onClick={() => setWordlistLang(wl.id)}
+            className={`px-2.5 py-1 text-xs rounded-md transition-colors ${
+              wordlistLang === wl.id
+                ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40'
+                : 'bg-[#0c1220] text-gray-400 border border-[#1a2235] hover:border-emerald-500/30 hover:text-gray-300'
+            }`}
+          >
+            {wl.native}
+          </button>
+        ))}
       </div>
 
       {/* Textarea */}

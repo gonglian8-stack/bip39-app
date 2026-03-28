@@ -24,6 +24,7 @@ export default function Home() {
   const [privacyMode, setPrivacyMode] = useState(false);
   const [qrData, setQrData] = useState<{ text: string; label: string } | null>(null);
   const [activeSection, setActiveSection] = useState('generator');
+  const [showOfflineTip, setShowOfflineTip] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -87,34 +88,27 @@ export default function Home() {
 
         {/* Main Content */}
         <main id="main-scroll" className="flex-1 overflow-y-auto px-4 lg:px-8 py-5 space-y-5">
-          {/* Hero title */}
-          <div className="mb-4">
-            <h1 className="text-3xl lg:text-4xl font-bold text-white leading-tight">
-              BIP39 Mnemonic Tool<br />
-              <span className="text-emerald-400">100% Client-Side, Offline Safe.</span>
+          {/* Hero - compact */}
+          <div className="mb-0">
+            <h1 className="text-2xl lg:text-3xl font-bold text-white leading-tight">
+              BIP39 Mnemonic Tool
+              <span className="text-emerald-400"> — Offline Safe.</span>
             </h1>
-            <p className="text-base text-gray-400 mt-2 max-w-2xl">
+            <p className="text-sm text-gray-400 mt-1">
               {isZh
-                ? '安全生成、恢复和派生钱包。所有操作完全在浏览器本地运行，不发送任何数据到服务器。'
-                : 'Generate, recover and derive wallets securely. Nothing is ever sent to any server.'}
+                ? '安全生成、恢复和派生钱包。100% 客户端运行，不发送任何数据。'
+                : 'Generate, recover and derive wallets securely. 100% client-side, nothing sent to any server.'}
             </p>
           </div>
 
-          {/* Safety warning - RED */}
-          <div className="text-sm text-red-300 bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-3 mb-1">
+          {/* Safety warning - compact RED */}
+          <div className="text-xs text-red-300 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2">
             ⚠️ {isZh
-              ? '切勿在联网设备上输入真实资产助记词！强烈建议断网后使用本工具。'
-              : 'Never enter real funds mnemonic on an online device. We strongly recommend using this tool offline.'}
+              ? '切勿在联网设备上输入真实资产助记词！强烈建议断网后使用。'
+              : 'Never enter real funds mnemonic on an online device. Use this tool offline.'}
           </div>
 
-          {/* Trust cards - 4 pillars */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-2">
-            <TrustCard icon="🔐" title={isZh ? '纯客户端' : 'Client-side Only'} desc={isZh ? '所有加密操作在浏览器本地运行' : 'All crypto operations run locally in your browser'} />
-            <TrustCard icon="📂" title={isZh ? '开源代码' : 'Open Source'} desc={isZh ? '在 GitHub 上验证源代码' : 'Verify code on GitHub'} href="https://github.com/gonglian8-stack/bip39-app" />
-            <TrustCard icon="🛡️" title={isZh ? '安全审计' : 'Security Audit'} desc={isZh ? '核心加密模块经过审计' : 'Core crypto modules are audited'} />
-            <TrustCard icon="📥" title={isZh ? '离线可用' : 'Offline Ready'} desc={isZh ? '下载后断网运行' : 'Download and run without internet'} />
-          </div>
-
+          {/* Mnemonic Section - first visible functional area */}
           <div id="mnemonic">
             <MnemonicSection
               mnemonic={m.mnemonic}
@@ -132,6 +126,109 @@ export default function Home() {
               setPbkdf2Rounds={m.setPbkdf2Rounds}
             />
           </div>
+
+          {/* Trust cards - below mnemonic */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            <button
+              onClick={() => document.getElementById('mnemonic')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              className="bg-[#0c1220] border border-[#1a2235] rounded-xl p-4 hover:border-emerald-500/30 transition-colors text-left group"
+            >
+              <div className="text-2xl mb-2">🔐</div>
+              <h3 className="text-sm font-semibold text-white mb-1 group-hover:text-emerald-400 transition-colors">
+                {isZh ? '纯客户端' : 'Client-side Only'}
+              </h3>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                {isZh ? '所有加密操作在浏览器本地运行' : 'All crypto operations run locally in your browser'}
+              </p>
+            </button>
+
+            <a
+              href="https://github.com/gonglian8-stack/bip39-app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#0c1220] border border-[#1a2235] rounded-xl p-4 hover:border-emerald-500/30 transition-colors text-left group"
+            >
+              <div className="text-2xl mb-2">📂</div>
+              <h3 className="text-sm font-semibold text-white mb-1 group-hover:text-emerald-400 transition-colors">
+                {isZh ? '开源代码' : 'Open Source'}
+              </h3>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                {isZh ? '在 GitHub 上验证代码' : 'Verify code on GitHub'}
+              </p>
+            </a>
+
+            <a
+              href="https://github.com/nicolo-ribaudo/audits-noble-curves"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#0c1220] border border-[#1a2235] rounded-xl p-4 hover:border-emerald-500/30 transition-colors text-left group"
+            >
+              <div className="text-2xl mb-2">🛡️</div>
+              <h3 className="text-sm font-semibold text-white mb-1 group-hover:text-emerald-400 transition-colors">
+                {isZh ? '安全审计' : 'Security Audit'}
+              </h3>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                {isZh ? '核心加密模块已通过审计' : 'Core crypto modules are audited'}
+              </p>
+            </a>
+
+            <button
+              onClick={() => setShowOfflineTip(true)}
+              className="bg-[#0c1220] border border-[#1a2235] rounded-xl p-4 hover:border-emerald-500/30 transition-colors text-left group relative"
+            >
+              <div className="text-2xl mb-2">📥</div>
+              <h3 className="text-sm font-semibold text-white mb-1 group-hover:text-emerald-400 transition-colors">
+                {isZh ? '离线可用' : 'Offline Ready'}
+              </h3>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                {isZh ? '下载后可断网使用' : 'Download and run without internet'}
+              </p>
+            </button>
+          </div>
+
+          {/* Offline Tip Modal */}
+          {showOfflineTip && (
+            <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setShowOfflineTip(false)}>
+              <div className="bg-[#0c1220] border border-emerald-500/30 rounded-2xl p-6 max-w-md mx-4 shadow-2xl" onClick={e => e.stopPropagation()}>
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-3xl">📥</span>
+                  <h3 className="text-lg font-bold text-white">{isZh ? '离线使用指南' : 'Offline Usage Guide'}</h3>
+                </div>
+                <div className="space-y-3 text-sm text-gray-300">
+                  <div className="flex items-start gap-2">
+                    <span className="text-emerald-400 font-bold mt-0.5">1</span>
+                    <p>{isZh
+                      ? <>按 <kbd className="px-1.5 py-0.5 bg-[#1a2235] rounded text-xs text-emerald-400 font-mono">Ctrl+S</kbd> (Mac: <kbd className="px-1.5 py-0.5 bg-[#1a2235] rounded text-xs text-emerald-400 font-mono">⌘+S</kbd>) 保存完整页面到本地</>
+                      : <>Press <kbd className="px-1.5 py-0.5 bg-[#1a2235] rounded text-xs text-emerald-400 font-mono">Ctrl+S</kbd> (Mac: <kbd className="px-1.5 py-0.5 bg-[#1a2235] rounded text-xs text-emerald-400 font-mono">⌘+S</kbd>) to save the full page locally</>}</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="text-emerald-400 font-bold mt-0.5">2</span>
+                    <p>{isZh ? '断开网络连接' : 'Disconnect from the internet'}</p>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="text-emerald-400 font-bold mt-0.5">3</span>
+                    <p>{isZh ? '打开保存的 HTML 文件即可安全使用' : 'Open the saved HTML file to use securely offline'}</p>
+                  </div>
+                </div>
+                <div className="mt-4 pt-3 border-t border-[#1a2235] flex items-center justify-between">
+                  <a
+                    href="https://github.com/gonglian8-stack/bip39-app"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-emerald-400 hover:underline"
+                  >
+                    {isZh ? '或从 GitHub 下载' : 'Or download from GitHub'}
+                  </a>
+                  <button
+                    onClick={() => setShowOfflineTip(false)}
+                    className="px-4 py-1.5 text-sm bg-emerald-500/20 text-emerald-400 rounded-lg hover:bg-emerald-500/30 transition-colors"
+                  >
+                    {isZh ? '知道了' : 'Got it'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Entropy - shown in main on mobile, hidden on desktop (moved to right panel) */}
           <div id="entropy" className="lg:hidden">
@@ -271,14 +368,3 @@ export default function Home() {
   );
 }
 
-function TrustCard({ icon, title, desc, href }: { icon: string; title: string; desc: string; href?: string }) {
-  const inner = (
-    <div className="bg-[#0c1220] border border-[#1a2235] rounded-xl p-4 hover:border-emerald-500/20 transition-colors h-full">
-      <div className="text-2xl mb-2">{icon}</div>
-      <h3 className="text-sm font-semibold text-white mb-1">{title}</h3>
-      <p className="text-xs text-gray-500 leading-relaxed">{desc}</p>
-    </div>
-  );
-  if (href) return <a href={href} target="_blank" rel="noopener noreferrer">{inner}</a>;
-  return inner;
-}

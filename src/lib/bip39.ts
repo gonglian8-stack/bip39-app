@@ -132,16 +132,16 @@ export function shannonEntropy(mnemonic: string): number {
 }
 
 export const WORDLIST_LANGS = [
-  { id: 'english', label: 'English', labelZh: '英语' },
-  { id: 'chinese_simplified', label: 'Chinese Simplified', labelZh: '中文简体' },
-  { id: 'chinese_traditional', label: 'Chinese Traditional', labelZh: '中文繁体' },
-  { id: 'japanese', label: 'Japanese', labelZh: '日语' },
-  { id: 'korean', label: 'Korean', labelZh: '韩语' },
-  { id: 'spanish', label: 'Spanish', labelZh: '西班牙语' },
-  { id: 'french', label: 'French', labelZh: '法语' },
-  { id: 'italian', label: 'Italian', labelZh: '意大利语' },
-  { id: 'czech', label: 'Czech', labelZh: '捷克语' },
-  { id: 'portuguese', label: 'Portuguese', labelZh: '葡萄牙语' },
+  { id: 'english', label: 'English', labelZh: '英语', native: 'English' },
+  { id: 'chinese_simplified', label: 'Chinese Simplified', labelZh: '中文简体', native: '简体中文' },
+  { id: 'chinese_traditional', label: 'Chinese Traditional', labelZh: '中文繁体', native: '繁體中文' },
+  { id: 'japanese', label: 'Japanese', labelZh: '日语', native: '日本語' },
+  { id: 'korean', label: 'Korean', labelZh: '韩语', native: '한국어' },
+  { id: 'spanish', label: 'Spanish', labelZh: '西班牙语', native: 'Español' },
+  { id: 'french', label: 'French', labelZh: '法语', native: 'Français' },
+  { id: 'italian', label: 'Italian', labelZh: '意大利语', native: 'Italiano' },
+  { id: 'czech', label: 'Czech', labelZh: '捷克语', native: 'Čeština' },
+  { id: 'portuguese', label: 'Portuguese', labelZh: '葡萄牙语', native: 'Português' },
 ];
 
 export const WORD_COUNTS: WordCount[] = [12, 15, 18, 21, 24];
